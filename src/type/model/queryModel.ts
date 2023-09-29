@@ -173,10 +173,10 @@ export function generateSql(queryModel: QueryModel): string {
         let on: string
         if (j.relationTable.name != null || j.relationTable.name != undefined) {
             lj = `LEFT JOIN ${j.relationTable.name} as ${j.relationTable.shortName} `
-            on = `ON ${j.relationTable.shortName}.${j.relationTable.idField} = ${j.relationTable.shortName}.${j.relationTable.idField}`
+            on = `ON ${j.relationTable.shortName}.${j.relationTable.idField} = ${j.tableShortName}.${j.columnName}`
         } else {
             lj = `LEFT JOIN ${j.relationTable.name} as ${j.relationTable.shortName} `
-            on = `ON ${j.relationTable.name}.${j.columnName} = ${j.relationTable.shortName}.${j.relationTable.idField}`
+            on = `ON ${j.relationTable.name}.${j.columnName} = ${j.tableShortName}.${j.columnName}`
         }
         return lj.concat(on)
     });

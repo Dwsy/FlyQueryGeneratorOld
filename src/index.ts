@@ -64,32 +64,45 @@ const queryModel: QueryModel = {
 fquery += "select\n{{selectColumns}}";
 
 function genQuery(output: Output, queryModel?: QueryModel): QueryModel {
-
-  // 创建 relationTableColumnMap 和 outPropertiesCodes 两个 Map 对象
+  const relationTableShortNameMap = new Map<string, string>();
+  const relationTableShortNameReverseMapReverse = new Map<string, string>();
   const relationTableColumnMap = new Map<string, string>();
+  const needJoinRelationTableMap = new Map<string, tableData>();
+  const needJoinColumnTableNameMap = new Map<string, string>();
+  const relationTableMap = new Map<string, tableData>();
   // const relationTableColumnNameSet = new Set<string>();
-  const outPropertiesCodes = output.properties.map((data) => {
-    // 如果 data.name 中包含 "__"(关联查询实体)，则将 data.propertycode 和 data.name 添加到 relationTableColumnMap 中
-    if (data.name.indexOf("__") !== -1) {
-      relationTableColumnMap.set(data.propertycode, data.name);
-    }
-    return data.propertycode;
-  });
+  // const outPropertiesCodes = output.properties.map((data) => {
+  //   // 如果 data.name 中包含 "__"(关联查询实体)，则将 data.propertycode 和 data.name 添加到 relationTableColumnMap 中
+  //   if (data.name.indexOf("__") !== -1) {
+  //     relationTableColumnMap.set(data.propertycode, data.name);
+  //     const [relationTableName, relationColumnName] = data.name.split("__");
+  //     needJoinTableMap.set(data.name, relationTableName)
+  //   }
+  //   return data.propertycode;
+  // });
 
   // 获取 output 对应的表格数据
   const outputTable = tableDataMap.get(output.objectcode);
   // 创建 relationTableMap 和 outPropertiesDataMap 两个 Map 对象
-  const relationTableMap = new Map<string, tableData>();
-  const outPropertiesDataMap = outPropertiesCodes.map((code) => {
-    const columnData = columnDataMap.get(code);
+
+  // const outColumnNameArray = output.properties.map((data) => data.name)
+  const outPropertiesDataMap = output.properties.map((data) => {
+    const columnData = columnDataMap.get(data.propertycode);
     // 如果 columnData 中包含 relationobjectcode 属性，则将 relationTableMap 中添加对应的表格数据
-    if (columnData.hasOwnProperty("relationobjectcode")) {
-      if (columnData.relationobjectcode > 0 && columnData.propertytypecode != "1000000000") {
-        // if (columnData.columnname.indexOf("__") != -1) {
-        const relationobjectcode = columnData.relationobjectcode;
-        const relationTable = tableDataMap.get(relationobjectcode);
-        relationTableMap.set(columnData.columnname, relationTable);
-        // }
+    // if (columnData.hasOwnProperty("relationobjectcode")) {
+    //   if (columnData.relationobjectcode > 0 && columnData.propertytypecode != "1000000000") {
+    //     const relationobjectcode = columnData.relationobjectcode;
+    //     const relationTable = tableDataMap.get(relationobjectcode);
+    //     relationTableMap.set(columnData.columnname, relationTable);
+    //   }
+    // }
+
+    if (data.name.indexOf("__") !== -1) {
+      const parts = data.name.split("__");
+      if (parts.length === 2) {
+        relationTableColumnMap.set(data.propertycode, data.name);
+        needJoinRelationTableMap.set(parts[0], tableDataMap.get(data.objectcode))
+        // needJoinColumnTableNameMap.set(data.propertycode, columnData.columnname)
       }
     }
     return columnData;
@@ -105,12 +118,12 @@ function genQuery(output: Output, queryModel?: QueryModel): QueryModel {
 
   // 遍历 relationTableMap，将关联表格的数据添加到 fquery 中
 
-  const relationTableShortNameMap = new Map<string, string>();
-  const relationTableShortNameReverseMapReverse = new Map<string, string>();
+  // 需要join的表 1.关联查询字段2.关联查询where筛选
+
   // console.log("relationTableMap", relationTableMap)
   // relationTableMap.entries()
   // 输出所有key-value对
-  relationTableMap.forEach((relationTable, columnname) => {
+  needJoinRelationTableMap.forEach((relationTable, columnname) => {
     // console.log("relationTable", relationTable)
     // console.log("columnname", columnname)
     let tableName = relationTable.tablename
@@ -157,14 +170,18 @@ function genQuery(output: Output, queryModel?: QueryModel): QueryModel {
     fquery += `on ${tableShortName}.${columnname} = ${relationTableShortName}.${idField}`;
   });
 
+
   log("relationTableShortNameMap----", relationTableShortNameMap)
+  // relationTableShortNameMap.forEach((relationTableShortName, columnname) => {
+
+  // })
   log(relationTableShortNameReverseMapReverse)
   // 查询列
   let selectColumns = outPropertiesDataMap
     .map((data) => {
-      console.log("data",data)//todo
+      console.log("data", data)//todo
       const queryname = relationTableColumnMap.get(data.propertycode);
-      console.log("relationTableShortNameMap",relationTableShortNameMap.get(queryname))
+      console.log("relationTableShortNameMap", relationTableShortNameMap.get(queryname))
       relationTableShortNameMap.get(queryname)
       if (queryname === undefined) {
         const columnModel: ColumnModel = {

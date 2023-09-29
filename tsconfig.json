@@ -1,0 +1,25 @@
+{
+  "compileOnSave": true,
+  "noImplicitSemicolons": true,
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "commonjs",
+    "target": "ES6",
+    "sourceMap": false,
+    "newLine": "crlf",
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.json",
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "logs"
+  ]
+}

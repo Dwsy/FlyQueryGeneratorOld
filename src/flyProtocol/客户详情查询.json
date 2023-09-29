@@ -1,0 +1,909 @@
+{
+	"modellogicname": "CRM经销商开户变更销户-客户详情",
+	"execmode": "1",
+	"status": "1",
+	"actiontype": "2",
+	"modelcode": "1705102596143976547",
+	"actioncategory": "1",
+	"usedatarule": "1",
+	"functionname": "",
+	"tenantdbtype": "2",
+	"tenantdbcode": "1674251226201591808",
+	"tenantdbname": "读写",
+	"operations": [
+		{
+			"templateref": "106",
+			"modellogicstepname": "",
+			"marktype": "2",
+			"modellogiccode": "1705108608896864310",
+			"modellogicstepcode": "1705108608896864309",
+			"seq": 1,
+			"status": "1",
+			"templateparams": {
+				"flycode": "\nif (!String.isBlank(IN.kx_basic_customer_information.id)) {\n    //客户基本信息\n    var basic_customer_information =\n        select\n    kbci.*\n        from\n    kx_basic_customer_information kbci\n    where kbci.id = { IN.kx_basic_customer_information.id }\n    NORULE;\n    //客户基本资料\n    var customer_basic_data =\n        select\n        kcbd.*\n        from\n    kx_customer_basic_data kcbd where kcbd.id = { basic_customer_information[0].customer_basic_data_id } NORULE;\n    //立项评估表\n    var project_evaluation =\n        select\n        kpe.*\n        from\n    kx_project_evaluation kpe where kpe.id = { basic_customer_information[0].project_evaluation_id } NORULE;\n    //物流信息表\n    var logistics_information =\n        select\n        kli.*\n        from\n    kx_logistics_information kli where kli.id = { basic_customer_information[0].logistics_information_id } NORULE;\n    //物流地址\n    var logistics_address =\n        select\n        kla.*\n        from\n    kx_logistics_address kla where kla.logistics_information_id = {logistics_information[0].id  } NORULE;\n    //招商需求分析表\n    var investment_analysis =\n        select\n        kia.*\n        from\n    kx_investment_analysis kia where kia.logistics_information_id = { basic_customer_information[0].investment_analysis_id } NORULE;\n    //开票信息\n    var invoice_info =\n        select\n        kii.*\n        from\n    kx_invoice_info kii where kii.id = { basic_customer_information[0].invoice_info_id } NORULE;\n    //经销产品\n    var product_distribution_info =\n        select\n        kpdi.*\n        from\n    kx_product_distribution_info kpdi where kpdi.basic_customer_information_id = {IN.kx_basic_customer_information.id } NORULE;\n\n\n    OUT.kx_basic_customer_information = basic_customer_information[0];\n    OUT.kx_customer_basic_data = customer_basic_data[0];\n    OUT.kx_project_evaluation = project_evaluation[0];\n    OUT.kx_logistics_information = logistics_information[0];\n    OUT.kx_investment_analysis = investment_analysis[0];\n    OUT.kx_invoice_info = invoice_info[0];\n    OUT.kx_product_distribution_info = logistics_address;\n    OUT.kx_product_distribution_info = product_distribution_info;\n}\n"
+			}
+		}
+	],
+	"modellogiccode": "1705108608896864310",
+	"marktype": "2",
+	"input": [
+		{
+			"name": "kx_basic_customer_information",
+			"objectcode": "1705047287740371043",
+			"objectname": "客户基本信息",
+			"datatype": "0",
+			"marktype": "2",
+			"properties": [
+				{
+					"name": "id",
+					"propertyname": "id",
+					"propertytypecode": "1",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371303",
+					"marktype": "2"
+				}
+			]
+		}
+	],
+	"output": [
+		{
+			"name": "kx_basic_customer_information",
+			"objectcode": "1705047287740371043",
+			"objectname": "客户基本信息",
+			"datatype": "0",
+			"marktype": "2",
+			"properties": [
+				{
+					"name": "id",
+					"propertyname": "id",
+					"propertytypecode": "1",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371303",
+					"marktype": "2"
+				},
+				{
+					"name": "application_type",
+					"propertyname": "申请类型",
+					"propertytypecode": "10000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371305",
+					"marktype": "2"
+				},
+				{
+					"name": "effective_date",
+					"propertyname": "生效日期",
+					"propertytypecode": "7",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371306",
+					"marktype": "2"
+				},
+				{
+					"name": "belong_to_main_customer",
+					"propertyname": "归属主客户(存储主客户的id)",
+					"propertytypecode": "6",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371307",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_full_name",
+					"propertyname": "客户全称",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371308",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_short_name",
+					"propertyname": "客户简称",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371309",
+					"marktype": "2"
+				},
+				{
+					"name": "replace_distributor",
+					"propertyname": "替换经销商",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371310",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_contact_person",
+					"propertyname": "客户联系人姓名",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371311",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_contact_phone",
+					"propertyname": "客户联系电话",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371312",
+					"marktype": "2"
+				},
+				{
+					"name": "sales_region",
+					"propertyname": "经销区域",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371313",
+					"marktype": "2"
+				},
+				{
+					"name": "shared_main_account_funds",
+					"propertyname": "是否共用主户资金",
+					"propertytypecode": "5",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371315",
+					"marktype": "2"
+				},
+				{
+					"name": "joint_market_building",
+					"propertyname": "是否共建市场",
+					"propertytypecode": "5",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371316",
+					"marktype": "2"
+				},
+				{
+					"name": "contact_address",
+					"propertyname": "联系地址",
+					"propertytypecode": "17",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371317",
+					"marktype": "2"
+				},
+				{
+					"name": "market_order_deposit",
+					"propertyname": "市场秩序保证金（元）",
+					"propertytypecode": "10",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371318",
+					"marktype": "2"
+				},
+				{
+					"name": "application_department",
+					"propertyname": "申请部门",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371319",
+					"marktype": "2"
+				},
+				{
+					"name": "remark",
+					"propertyname": "备注",
+					"propertytypecode": "996007000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371321",
+					"marktype": "2"
+				},
+				{
+					"name": "attachments",
+					"propertyname": "附件",
+					"propertytypecode": "26",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371322",
+					"marktype": "2"
+				},
+				{
+					"name": "application_status",
+					"propertyname": "申请状态",
+					"propertytypecode": "5",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371323",
+					"marktype": "2"
+				},
+				{
+					"name": "sales_assistant",
+					"propertyname": "销售助理",
+					"propertytypecode": "6",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371324",
+					"marktype": "2"
+				},
+				{
+					"name": "oa_approval_record_id",
+					"propertyname": "OA审批记录",
+					"propertytypecode": "6",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371325",
+					"marktype": "2"
+				},
+				{
+					"name": "invoice_info_id",
+					"propertyname": "开票信息id",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371326",
+					"marktype": "2"
+				},
+				{
+					"name": "logistics_information_id",
+					"propertyname": "物流信息id",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371327",
+					"marktype": "2"
+				},
+				{
+					"name": "investment_analysis_id",
+					"propertyname": "招商需求分析id",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371328",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_basic_data_id",
+					"propertyname": "客户基础信息id",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371329",
+					"marktype": "2"
+				},
+				{
+					"name": "project_evaluation_id",
+					"propertyname": "立项评估id",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371330",
+					"marktype": "2"
+				},
+				{
+					"name": "createop",
+					"propertyname": "创建人",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371331",
+					"marktype": "2"
+				},
+				{
+					"name": "createtime",
+					"propertyname": "创建时间",
+					"propertytypecode": "7",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371332",
+					"marktype": "2"
+				},
+				{
+					"name": "updatetop",
+					"propertyname": "修改人",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371333",
+					"marktype": "2"
+				},
+				{
+					"name": "updatetime",
+					"propertyname": "修改时间",
+					"propertytypecode": "7",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371334",
+					"marktype": "2"
+				},
+				{
+					"name": "distribution_product_series",
+					"propertyname": "经销产品系列",
+					"propertytypecode": "10000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371335",
+					"marktype": "2"
+				},
+				{
+					"name": "account_cancellation_reason",
+					"propertyname": "销户原因",
+					"propertytypecode": "996007000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705047287740371336",
+					"marktype": "2"
+				},
+				{
+					"name": "application_code",
+					"propertyname": "申请编号",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705087234883063907",
+					"marktype": "2"
+				},
+				{
+					"name": "change_type",
+					"propertyname": "变更类型",
+					"propertytypecode": "19",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705096907954720864",
+					"marktype": "2"
+				},
+				{
+					"name": "change_content",
+					"propertyname": "变更内容",
+					"propertytypecode": "996007000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705100600099868768",
+					"marktype": "2"
+				},
+				{
+					"name": "closed_account_customer_type",
+					"propertyname": "销户客户类型",
+					"propertytypecode": "5",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1705127957636452434",
+					"marktype": "2"
+				},
+				{
+					"name": "price_type",
+					"propertyname": "价格类型",
+					"propertytypecode": "10000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1706125248463769698",
+					"marktype": "2"
+				},
+				{
+					"name": "applicant",
+					"propertyname": "申请人",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1706135703106228310",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_code",
+					"propertyname": "客户编号",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1706135703106228309",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_type",
+					"propertyname": "新增客户类型",
+					"propertytypecode": "10000000000",
+					"objectcode": "1705047287740371043",
+					"propertycode": "1706211573888061536",
+					"marktype": "2"
+				}
+			]
+		},
+		{
+			"name": "kx_customer_basic_data",
+			"objectcode": "1705047287740371030",
+			"objectname": "客户基本资料表",
+			"datatype": "0",
+			"marktype": "2",
+			"properties": [
+				{
+					"name": "id",
+					"propertyname": "id",
+					"propertytypecode": "1",
+					"objectcode": "1705047287740371030",
+					"propertycode": "1705047287740371360",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_name",
+					"propertyname": "客户名称",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371030",
+					"propertycode": "1705047287740371361",
+					"marktype": "2"
+				},
+				{
+					"name": "development_history",
+					"propertyname": "发展历程",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371030",
+					"propertycode": "1705047287740371362",
+					"marktype": "2"
+				},
+				{
+					"name": "main_agent_product",
+					"propertyname": "主营代理产品",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371030",
+					"propertycode": "1705047287740371363",
+					"marktype": "2"
+				},
+				{
+					"name": "company_size",
+					"propertyname": "企业规模",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371030",
+					"propertycode": "1705047287740371364",
+					"marktype": "2"
+				},
+				{
+					"name": "industry_reputation",
+					"propertyname": "同行业口碑",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371030",
+					"propertycode": "1705047287740371365",
+					"marktype": "2"
+				},
+				{
+					"name": "meets_basic_criteria",
+					"propertyname": "是否达到基本标准",
+					"propertytypecode": "6",
+					"objectcode": "1705047287740371030",
+					"propertycode": "1705047287740371366",
+					"marktype": "2"
+				}
+			]
+		},
+		{
+			"name": "kx_project_evaluation",
+			"objectcode": "1705047287740371028",
+			"objectname": "立项评估表",
+			"datatype": "0",
+			"marktype": "2",
+			"properties": [
+				{
+					"name": "id",
+					"propertyname": "id",
+					"propertytypecode": "1",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371366",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_name",
+					"propertyname": "客户名称",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371367",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_category",
+					"propertyname": "客户类别（意愿）",
+					"propertytypecode": "10000000000",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371368",
+					"marktype": "2"
+				},
+				{
+					"name": "working_capital",
+					"propertyname": "流动资金（万）",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371369",
+					"marktype": "2"
+				},
+				{
+					"name": "warehouse_size",
+					"propertyname": "仓库规模（平方）",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371370",
+					"marktype": "2"
+				},
+				{
+					"name": "salesperson_count",
+					"propertyname": "业务员数量（人）",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371371",
+					"marktype": "2"
+				},
+				{
+					"name": "transportation_vehicle_count",
+					"propertyname": "运输车数量（量）",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371372",
+					"marktype": "2"
+				},
+				{
+					"name": "terminal_coverage_rate",
+					"propertyname": "终端覆盖率",
+					"propertytypecode": "10",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371373",
+					"marktype": "2"
+				},
+				{
+					"name": "reputation_rating",
+					"propertyname": "口碑评价（分）",
+					"propertytypecode": "10",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371374",
+					"marktype": "2"
+				},
+				{
+					"name": "management_ability_rating",
+					"propertyname": "管理能力综合评价（分）",
+					"propertytypecode": "10",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371375",
+					"marktype": "2"
+				},
+				{
+					"name": "score",
+					"propertyname": "得分",
+					"propertytypecode": "10",
+					"objectcode": "1705047287740371028",
+					"propertycode": "1705047287740371376",
+					"marktype": "2"
+				}
+			]
+		},
+		{
+			"name": "kx_logistics_address",
+			"objectcode": "1705047287740371036",
+			"objectname": "物流地址表",
+			"datatype": "1",
+			"marktype": "2",
+			"properties": [
+				{
+					"name": "id",
+					"propertyname": "id",
+					"propertytypecode": "1",
+					"objectcode": "1705047287740371036",
+					"propertycode": "1705047287740371349",
+					"marktype": "2"
+				},
+				{
+					"name": "delivery_address",
+					"propertyname": "收货地址",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371036",
+					"propertycode": "1705047287740371350",
+					"marktype": "2"
+				},
+				{
+					"name": "receiver_contact",
+					"propertyname": "收货联系人",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371036",
+					"propertycode": "1705047287740371351",
+					"marktype": "2"
+				},
+				{
+					"name": "receiver_phone",
+					"propertyname": "收货人电话",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371036",
+					"propertycode": "1705047287740371352",
+					"marktype": "2"
+				},
+				{
+					"name": "logistics_notes",
+					"propertyname": "物流信息备注",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371036",
+					"propertycode": "1705047287740371353",
+					"marktype": "2"
+				},
+				{
+					"name": "logistics_information_id",
+					"propertyname": "物流信息id",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371036",
+					"propertycode": "1705047287740371354",
+					"marktype": "2"
+				}
+			]
+		},
+		{
+			"name": "kx_logistics_information",
+			"objectcode": "1705047287740371038",
+			"objectname": "物流信息表",
+			"datatype": "0",
+			"marktype": "2",
+			"properties": [
+				{
+					"name": "id",
+					"propertyname": "id",
+					"propertytypecode": "1",
+					"objectcode": "1705047287740371038",
+					"propertycode": "1705047287740371343",
+					"marktype": "2"
+				},
+				{
+					"name": "shipment_condition",
+					"propertyname": "装运条件",
+					"propertytypecode": "10000000000",
+					"objectcode": "1705047287740371038",
+					"propertycode": "1705047287740371344",
+					"marktype": "2"
+				},
+				{
+					"name": "need_seal",
+					"propertyname": "是否需要滚章",
+					"propertytypecode": "6",
+					"objectcode": "1705047287740371038",
+					"propertycode": "1705047287740371345",
+					"marktype": "2"
+				},
+				{
+					"name": "seal_name",
+					"propertyname": "滚章名称",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371038",
+					"propertycode": "1705047287740371346",
+					"marktype": "2"
+				},
+				{
+					"name": "full_board_delivery",
+					"propertyname": "是否整板发货",
+					"propertytypecode": "6",
+					"objectcode": "1705047287740371038",
+					"propertycode": "1705047287740371347",
+					"marktype": "2"
+				},
+				{
+					"name": "platform_deposit",
+					"propertyname": "地台板押金（元）",
+					"propertytypecode": "10000000000",
+					"objectcode": "1705047287740371038",
+					"propertycode": "1705047287740371348",
+					"marktype": "2"
+				},
+				{
+					"name": "minimum_weight_per_shipment",
+					"propertyname": "每车次不低于（吨板）",
+					"propertytypecode": "10000000000",
+					"objectcode": "1705047287740371038",
+					"propertycode": "1705047287740371349",
+					"marktype": "2"
+				}
+			]
+		},
+		{
+			"name": "kx_investment_analysis",
+			"objectcode": "1705047287740371034",
+			"objectname": "招商需求分析表",
+			"datatype": "0",
+			"marktype": "2",
+			"properties": [
+				{
+					"name": "id",
+					"propertyname": "id",
+					"propertytypecode": "1",
+					"objectcode": "1705047287740371034",
+					"propertycode": "1705047287740371354",
+					"marktype": "2"
+				},
+				{
+					"name": "industry",
+					"propertyname": "行业",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371034",
+					"propertycode": "1705047287740371355",
+					"marktype": "2"
+				},
+				{
+					"name": "market_region",
+					"propertyname": "区域市场",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371034",
+					"propertycode": "1705047287740371356",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_type",
+					"propertyname": "客户类型",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371034",
+					"propertycode": "1705047287740371357",
+					"marktype": "2"
+				},
+				{
+					"name": "investment_purpose",
+					"propertyname": "招商目的",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371034",
+					"propertycode": "1705047287740371358",
+					"marktype": "2"
+				},
+				{
+					"name": "market_size",
+					"propertyname": "市场规模",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371034",
+					"propertycode": "1705047287740371359",
+					"marktype": "2"
+				},
+				{
+					"name": "sales_method",
+					"propertyname": "销售方式",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371034",
+					"propertycode": "1705047287740371360",
+					"marktype": "2"
+				}
+			]
+		},
+		{
+			"name": "kx_invoice_info",
+			"objectcode": "1705047287740371040",
+			"objectname": "开票信息表",
+			"datatype": "0",
+			"marktype": "2",
+			"properties": [
+				{
+					"name": "id",
+					"propertyname": "id",
+					"propertytypecode": "1",
+					"objectcode": "1705047287740371040",
+					"propertycode": "1705047287740371336",
+					"marktype": "2"
+				},
+				{
+					"name": "tax_invoice_type",
+					"propertyname": "金税发票类型",
+					"propertytypecode": "10000000000",
+					"objectcode": "1705047287740371040",
+					"propertycode": "1705047287740371337",
+					"marktype": "2"
+				},
+				{
+					"name": "taxpayer_identification_number",
+					"propertyname": "纳税人识别号",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371040",
+					"propertycode": "1705047287740371338",
+					"marktype": "2"
+				},
+				{
+					"name": "billing_contact",
+					"propertyname": "开票联系人",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371040",
+					"propertycode": "1705047287740371339",
+					"marktype": "2"
+				},
+				{
+					"name": "billing_phone",
+					"propertyname": "开票电话",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371040",
+					"propertycode": "1705047287740371340",
+					"marktype": "2"
+				},
+				{
+					"name": "bank_name",
+					"propertyname": "开户银行",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371040",
+					"propertycode": "1705047287740371341",
+					"marktype": "2"
+				},
+				{
+					"name": "bank_account",
+					"propertyname": "银行账户",
+					"propertytypecode": "6",
+					"objectcode": "1705047287740371040",
+					"propertycode": "1705047287740371342",
+					"marktype": "2"
+				},
+				{
+					"name": "billing_address",
+					"propertyname": "开票地址",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371040",
+					"propertycode": "1705047287740371343",
+					"marktype": "2"
+				}
+			]
+		},
+		{
+			"name": "kx_product_distribution_info",
+			"objectcode": "1705047287740371026",
+			"objectname": "经销产品信息",
+			"datatype": "1",
+			"marktype": "2",
+			"properties": [
+				{
+					"name": "id",
+					"propertyname": "id",
+					"propertytypecode": "1",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371376",
+					"marktype": "2"
+				},
+				{
+					"name": "main_customer_name",
+					"propertyname": "主客户名称",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371377",
+					"marktype": "2"
+				},
+				{
+					"name": "main_customer_code",
+					"propertyname": "主客户编号",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371378",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_name",
+					"propertyname": "客户名称",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371379",
+					"marktype": "2"
+				},
+				{
+					"name": "product_code",
+					"propertyname": "产品编号",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371380",
+					"marktype": "2"
+				},
+				{
+					"name": "product_name",
+					"propertyname": "产品名称",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371381",
+					"marktype": "2"
+				},
+				{
+					"name": "price_type",
+					"propertyname": "价格类型（大类）",
+					"propertytypecode": "10",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371382",
+					"marktype": "2"
+				},
+				{
+					"name": "price_per_box",
+					"propertyname": "价格（元/箱）",
+					"propertytypecode": "10",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371383",
+					"marktype": "2"
+				},
+				{
+					"name": "fund_per_box",
+					"propertyname": "基金（元/箱）",
+					"propertytypecode": "10",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371384",
+					"marktype": "2"
+				},
+				{
+					"name": "special_discount_per_box",
+					"propertyname": "特殊折扣（元/箱）",
+					"propertytypecode": "10",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371385",
+					"marktype": "2"
+				},
+				{
+					"name": "remarks",
+					"propertyname": "备注",
+					"propertytypecode": "4",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371386",
+					"marktype": "2"
+				},
+				{
+					"name": "basic_customer_information_id",
+					"propertyname": "客户基本信息",
+					"propertytypecode": "100000000000",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705047287740371387",
+					"marktype": "2"
+				},
+				{
+					"name": "customer_code",
+					"propertyname": "客户编号",
+					"propertytypecode": "3",
+					"objectcode": "1705047287740371026",
+					"propertycode": "1705051272673103967",
+					"marktype": "2"
+				}
+			]
+		}
+	],
+	"logicscript": "",
+	"uilogicscript": "",
+	"message": null
+}
